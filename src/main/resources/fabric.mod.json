@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "zanoob-addon",
+  "version": "${version}",
+  "name": "zanoob addon",
+  "description": "Addon for team Vache",
+  "authors": [
+    "zan"
+  ],
+  "contact": {
+    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
+  },
+  "icon": "assets/template/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "com.zanoob.addon.AddonTemplate"
+    ]
+  },
+  "mixins": [
+    "addon-template.mixins.json"
+  ],
+  "custom": {
+    "meteor-client:color": "225,25,25"
+  },
+  "depends": {
+    "java": ">=17",
+    "minecraft": ["1.20.4","${mc_version}"],
+    "meteor-client": "*"
+  }
+}
