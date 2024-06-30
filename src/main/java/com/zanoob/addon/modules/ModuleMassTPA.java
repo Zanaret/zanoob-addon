@@ -3,6 +3,7 @@ package com.zanoob.addon.modules;
 import com.zanoob.addon.AddonTemplate;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
+import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -55,7 +56,7 @@ public class ModuleMassTPA extends Module {
 
     private int index = 0;
     private double timer=0;
-    private String command = "/tpa";
+    private final String command = "/tpa";
 
     @Override
     public void onActivate() {
@@ -104,14 +105,15 @@ public class ModuleMassTPA extends Module {
 
     }
 
-//    @EventHandler
-//    private void onReceivedMessage(ReceiveMessageEvent event){
-//        String message = event.toString().toLowerCase();
-//        message = StringHelper.stripTextFormat(message);
-//        if (message.contains("accepted") && message.contains("request")){
-//            toggle();
-//        }
-//    }
+    @EventHandler
+    private void onReceivedMessage(ReceiveMessageEvent event){
+        String message = event.toString().toLowerCase();
+        message = StringHelper.stripTextFormat(message);
+        if (message.contains("accepted") && message.contains("request")){
+            ChatUtils.sendPlayerMsg("/tpacancel");
+            toggle();
+        }
+    }
 
     @EventHandler
     private void onScreenOpen(OpenScreenEvent event) {
