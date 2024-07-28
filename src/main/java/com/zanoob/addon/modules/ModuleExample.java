@@ -1,12 +1,22 @@
 package com.zanoob.addon.modules;
 
-import com.zanoob.addon.AddonTemplate;
+import com.zanoob.addon.MainAddon;
+import meteordevelopment.meteorclient.events.render.Render2DEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
+import meteordevelopment.meteorclient.gui.WidgetScreen;
+import meteordevelopment.meteorclient.gui.WindowScreen;
+import meteordevelopment.meteorclient.gui.widgets.WWidget;
+import meteordevelopment.meteorclient.gui.widgets.containers.WContainer;
+import meteordevelopment.meteorclient.gui.widgets.input.WTextBox;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.ColorSetting;
 import meteordevelopment.meteorclient.settings.DoubleSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.systems.hud.Hud;
+import meteordevelopment.meteorclient.systems.hud.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudGroup;
+import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
@@ -33,7 +43,7 @@ public class ModuleExample extends Module {
     );
 
     private final Setting<SettingColor> color = sgRender.add(new ColorSetting.Builder()
-        .name("color")
+        .name("hell2334")
         .description("The color of the marker.")
         .defaultValue(Color.MAGENTA)
         .build()
@@ -43,12 +53,12 @@ public class ModuleExample extends Module {
      * The {@code name} parameter should be in kebab-case.
      */
     public ModuleExample() {
-        super(AddonTemplate.CATEGORY, "world-origin", "An example module that highlights the center of the world.");
+        super(MainAddon.CATEGORY, "world-origin", "An example module that highlights the center of the world.");
     }
 
     /**
      * Example event handling method.
-     * Requires {@link AddonTemplate#getPackage()} to be setup correctly, will fail silently otherwise.
+     * Requires {@link MainAddon#getPackage()} to be setup correctly, will fail silently otherwise.
      */
     @EventHandler
     private void onRender3d(Render3DEvent event) {
@@ -61,6 +71,8 @@ public class ModuleExample extends Module {
         );
 
         // Render the marker based on the color setting
-        event.renderer.box(marker, color.get(), color.get(), ShapeMode.Both, 0);
+        event.renderer.box(marker, color.get(), color.get(), ShapeMode.Sides, 0);
     }
+
+
 }

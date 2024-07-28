@@ -1,16 +1,17 @@
 package com.zanoob.addon.hud;
 
-import com.zanoob.addon.AddonTemplate;
+import com.zanoob.addon.MainAddon;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
+import com.zanoob.addon.modules.ModuleMassTPA;
 
 public class HudExample extends HudElement {
     /**
      * The {@code name} parameter should be in kebab-case.
      */
-    public static final HudElementInfo<HudExample> INFO = new HudElementInfo<>(AddonTemplate.HUD_GROUP, "example", "HUD element example.", HudExample::new);
+    public static final HudElementInfo<HudExample> INFO = new HudElementInfo<>(MainAddon.HUD_GROUP, "example", "HUD element example.", HudExample::new);
 
     public HudExample() {
         super(INFO);
@@ -23,7 +24,8 @@ public class HudExample extends HudElement {
         // Render background
         renderer.quad(x, y, getWidth(), getHeight(), Color.LIGHT_GRAY);
 
+
         // Render text
-        renderer.text("Example element", x, y, Color.WHITE, true);
+        renderer.text("test", x, y, Color.WHITE, false);
     }
 }

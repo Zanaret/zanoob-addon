@@ -2,6 +2,7 @@ package com.zanoob.addon;
 
 import com.zanoob.addon.commands.CommandExample;
 import com.zanoob.addon.hud.HudExample;
+import com.zanoob.addon.modules.ModuleExample;
 import com.zanoob.addon.modules.ModuleMassTPA;
 import com.mojang.logging.LogUtils;
 import meteordevelopment.meteorclient.addons.GithubRepo;
@@ -13,7 +14,7 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 
-public class AddonTemplate extends MeteorAddon {
+public class MainAddon extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
     public static final Category CATEGORY = new Category("zanoob");
     public static final HudGroup HUD_GROUP = new HudGroup("zanoob");
@@ -27,10 +28,10 @@ public class AddonTemplate extends MeteorAddon {
         Modules.get().add(new ModuleMassTPA());
 
         // Commands
-        Commands.add(new CommandExample());
+        //Commands.add(new CommandExample());
 
         // HUD
-        Hud.get().register(HudExample.INFO);
+        //Hud.get().register(HudExample.INFO);
     }
 
     @Override

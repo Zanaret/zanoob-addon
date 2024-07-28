@@ -1,6 +1,6 @@
 package com.zanoob.addon.mixin;
 
-import com.zanoob.addon.AddonTemplate;
+import com.zanoob.addon.MainAddon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,6 +26,6 @@ public abstract class ExampleMixin {
      */
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onGameLoaded(RunArgs args, CallbackInfo ci) {
-        AddonTemplate.LOG.info("Hello from ExampleMixin!");
+        MainAddon.LOG.info("Hello from ExampleMixin!");
     }
 }

@@ -1,57 +1,75 @@
 package com.zanoob.addon.modules;
 
-import com.zanoob.addon.AddonTemplate;
+import com.zanoob.addon.MainAddon;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
+import meteordevelopment.meteorclient.events.render.Render2DEvent;
+import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.render.color.Color;
-import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.util.StringHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ModuleMassTPA extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final SettingGroup sgRender = this.settings.createGroup("Render");
+    private final SettingGroup sgNames = settings.createGroup("Names");
 
     /**
      * Example setting.
      * The {@code name} parameter should be in kebab-case.
      * If you want to access the setting from another class, simply make the setting {@code public}, and use
      * {@link meteordevelopment.meteorclient.systems.modules.Modules#get(Class)} to access the {@link Module} object.
+     *
      */
+
+
+
     private final Setting<Double> delay = sgGeneral.add(new DoubleSetting.Builder()
         .name("delay")
-        .description("The size of the marker.")
+        .description("delay time between tpa request.")
         .defaultValue(10.0d)
         .range(5d, 30.0d)
+        .sliderMax(30d)
+        .sliderMin(5d)
         .build()
     );
 
-    private final Setting<SettingColor> color = sgRender.add(new ColorSetting.Builder()
-        .name("color")
-        .description("The color of the marker.")
-        .defaultValue(Color.MAGENTA)
-        .build()
-    );
 
+
+    private enum requestType {
+        RANDOMIZED,
+        INORDER,
+        ENDTOFRONT
+
+    }
+
+    private final Setting<requestType> requestOrder = sgGeneral.add(new EnumSetting.Builder<requestType>()
+            .name("List of names order")
+            .description("order of names to send tpa")
+            .defaultValue(requestType.INORDER)
+            .build()
+    );
     /**
      * The {@code name} parameter should be in kebab-case.
      */
     public ModuleMassTPA() {
-        super(AddonTemplate.CATEGORY, "masstp", "tpa to all on the server");
+        super(MainAddon.CATEGORY, "masstp", "tpa to all on the server");
     }
 
-    private CopyOnWriteArrayList<PlayerListEntry> players;
-    private final ArrayList<String> player = new ArrayList<>();
+    public final ArrayList<String> players = new ArrayList<>();
     String playerName = mc.getSession().getUsername();
 
     private int index = 0;
@@ -61,7 +79,7 @@ public class ModuleMassTPA extends Module {
     @Override
     public void onActivate() {
 
-        player.clear();
+        players.clear();
         index = 0;
         timer = 0;
 
@@ -73,14 +91,29 @@ public class ModuleMassTPA extends Module {
             if(name.equalsIgnoreCase(playerName))
                 continue;
 
-            player.add(name);
+            players.add(name);
         }
+
+        switch (requestOrder.get()){
+            case RANDOMIZED:
+                Collections.shuffle(players);
+                break;
+            case ENDTOFRONT:
+                Collections.reverse(players);
+                break;
+            case INORDER:
+                Collections.sort(players);
+                break;
+        }
+
 
     }
 
+
+
     @Override
     public void onDeactivate() {
-        player.clear();
+        players.clear();
     }
 
 
@@ -92,13 +125,13 @@ public class ModuleMassTPA extends Module {
             return;
         }
 
-        if(index >= player.size())
+        if(index >= players.size())
         {
             toggle();
             return;
         }
 
-        ChatUtils.sendPlayerMsg(command + " " + player.get(index));
+        //ChatUtils.sendPlayerMsg(command + " " + players.get(index));
 
         index++;
         timer = (delay.get() * 2) - 1.0;
